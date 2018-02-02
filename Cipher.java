@@ -78,12 +78,6 @@ public class Cipher {
         String cText = generateCipherText(alphabetizedMatrixText);
         System.out.println(cText);
 
-
-
-
-
-
-
         return cText;
     }
 
@@ -231,14 +225,15 @@ public class Cipher {
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
             for (int row = 0; row < getNumRows(); row++) {
-                column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
-               // System.out.println(String.valueOf(matrixText.charAt(col*keyLength + row)));
-                System.out.println(column.get(row));
+                column.add(String.valueOf(matrixText.charAt(row*keyLength + col)));
             }
             columnsList.add(column);
         }
-
+        alphabetizeKey();
         ArrayList<ArrayList<String>> sortedColumnsList = new ArrayList<>();
+        for(int i = 0; i < keyLength; i++){
+            sortedColumnsList.add(columnsList.get(i));
+        }
         for (int i = 0; i < keyLength; i++){
             sortedColumnsList.set(decode.get(i), columnsList.get(i));
         }
@@ -273,7 +268,6 @@ public class Cipher {
                 matrixText += sortedColumnsList.get(col).get(row);
             }
         }
-
         return matrixText;
     }
 
@@ -301,15 +295,19 @@ public class Cipher {
      * alphabetizes the key and provides another arraylist storing index values so that we can decrypt
      */
     private void alphabetizeKey(){
-        ArrayList<Character> alphabetized = new ArrayList<>();
+        ArrayList<String> alphabetized = new ArrayList<>();
+        ArrayList<String> keyList = new ArrayList<>();
         for (char c : key.toCharArray()){
-            alphabetized.add(c);
+            alphabetized.add(Character.toString(c));
+            keyList.add(Character.toString(c));
         }
+
         Collections.sort(alphabetized);
+
         setKeyAlpha(alphabetized.toString());
 
         for(int i = 0; i < keyLength; i++){
-            decode.add(keyAlpha.indexOf(key.charAt(i)));
+            decode.add(alphabetized.indexOf(keyList.get(i)));
         }
     }
 
