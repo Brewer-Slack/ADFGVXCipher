@@ -14,6 +14,7 @@ public class Cipher {
     private ArrayList<String> preSortArray;
     private ArrayList<String> postSortArray;
     private ArrayList<String> matrixArray;
+    private ArrayList<String> adfgvxList;
 
     // DVC
     public Cipher(){
@@ -22,6 +23,13 @@ public class Cipher {
         this.key = "ENCRYPT";
         this.keyAlpha = "CENPRTY";
         this.keyLength = 7;
+        this.adfgvxList = new ArrayList<>();
+        adfgvxList.add("A");
+        adfgvxList.add("D");
+        adfgvxList.add("F");
+        adfgvxList.add("G");
+        adfgvxList.add("V");
+        adfgvxList.add("X");
     }
 
     // EVC
@@ -43,6 +51,20 @@ public class Cipher {
 
 
         return cText;
+    }
+
+    private ArrayList<Integer> letterToCoordinate(String letter){
+        int i = matrixArray.indexOf(letter);
+
+        int row = (i/6);
+        int col = i - ((row) * 6);
+
+        ArrayList<Integer> rowCol = new ArrayList<>();
+
+        rowCol.add(row);
+        rowCol.add(col);
+
+        return rowCol;
     }
 
     private ArrayList<String> createMatix(){
@@ -91,6 +113,34 @@ public class Cipher {
         matrixArray.add("9");
 
         return matrixArray;
+    }
+
+    private String convertCoordToLetter(ArrayList<Integer> coords){
+        int row = coords.get(0);
+        int col = coords.get(1);
+        int index = (6 * row) + col;
+        String letter = matrixArray.get(index);
+        return letter;
+    }
+
+    private ArrayList<String> convertCoordToADFGVX(ArrayList<Integer> coords){
+        int row = coords.get(0);
+        int col = coords.get(1);
+        ArrayList<String> adfgvx = new ArrayList<>();
+        adfgvx.add(adfgvxList.get(row));
+        adfgvx.add(adfgvxList.get(col));
+        return adfgvx;
+    }
+
+    private ArrayList<Integer> convertADFGVXToCoord(ArrayList<String> adfgvx){
+        String row = adfgvx.get(0);
+        String col = adfgvx.get(1);
+        int rowIndex = adfgvxList.indexOf(row);
+        int colIndex = adfgvxList.indexOf(col);
+        ArrayList<Integer> coord = new ArrayList<>();
+        coord.add(rowIndex);
+        coord.add(colIndex);
+        return coord;
     }
 
     public String getPlainText() {
