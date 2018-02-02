@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Cipher {
     // fields
@@ -15,6 +16,7 @@ public class Cipher {
     private ArrayList<String> postSortArray;
     private ArrayList<String> matrixArray;
     private ArrayList<String> adfgvxList;
+    private ArrayList<Integer> decode;
 
     // DVC
     public Cipher(){
@@ -30,6 +32,7 @@ public class Cipher {
         adfgvxList.add("G");
         adfgvxList.add("V");
         adfgvxList.add("X");
+        this.decode = new ArrayList<>();
     }
 
     // EVC
@@ -187,7 +190,21 @@ public class Cipher {
         return concatenatedADFGVXStringWithXs;
     }
 
+    /**
+     * alphabetizes the key and provides another arraylist storing index values so that we can decrypt
+     */
+    private void alphabetizeKey(){
+        ArrayList<Character> alphabetized = new ArrayList<>();
+        for (char c : key.toCharArray()){
+            alphabetized.add(c);
+        }
+        Collections.sort(alphabetized);
+        setKeyAlpha(alphabetized.toString());
 
+        for(int i = 0; i < keyLength; i++){
+            decode.add(keyAlpha.indexOf(key.charAt(i)));
+        }
+    }
 
 
 
