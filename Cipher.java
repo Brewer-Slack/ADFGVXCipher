@@ -59,6 +59,7 @@ public class Cipher {
         setPlainText(plainText);
         setKeyLength(key.length());
         createMatix();
+        alphabetizeKey();
 
         ArrayList<String> splitPlain = new ArrayList<>();
         ArrayList<ArrayList<Integer>> coordinatesList= new ArrayList<>();
@@ -85,6 +86,7 @@ public class Cipher {
         setCipherText(cipherText);
         setKey(key);
         createMatix();
+        alphabetizeKey();
 
         String alphabetizedMatrixText = dropXsFromCipherText(cipherText);
         String matrixText = undoAlphabetized(alphabetizedMatrixText);
