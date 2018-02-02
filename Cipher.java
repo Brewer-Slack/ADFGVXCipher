@@ -5,9 +5,7 @@ public class Cipher {
     // fields
     private String pText;
     private String matrixText;
-    private String kText;
-    private String kaText;
-    private String cText;
+    private String cipherText;
     private String cText2;
     private String key;
     private String keyAlpha;
@@ -31,7 +29,7 @@ public class Cipher {
     // DVC
     public Cipher(){
         this.pText = "SEEMEAT10";
-        this.cText = "XAGXGXVVGXAGXVAFXGXXX";
+        this.cipherText = "XAGXGXVVGXAGXVAFXGXXX";
         this.key = "ENCRYPT";
         this.keyAlpha = "CENPRTY";
         this.keyLength = 7;
@@ -48,7 +46,7 @@ public class Cipher {
     // EVC
     public Cipher(String plainText, String cipherText, String key) {
         this.pText = plainText;
-        this.cText = cipherText;
+        this.cipherText = cipherText;
         this.key = key;
         this.keyLength = key.length();
     }
@@ -61,24 +59,42 @@ public class Cipher {
         setPlainText(plainText);
         setKeyLength(key.length());
         createMatix();
+
         ArrayList<String> splitPlain = new ArrayList<>();
         ArrayList<ArrayList<Integer>> coordinatesList= new ArrayList<>();
         for(int i = 0; i < plainText.length(); i++) {
             splitPlain.add(String.valueOf(plainText.charAt(i)));
             coordinatesList.add(convertLetterToCoordinate(splitPlain.get(i)));
         }
-        ArrayList<ArrayList<String>> adfgvxList = new ArrayList<>();
+
+        ArrayList<ArrayList<String>> listOfLetterCoordinates = new ArrayList<>();
         for(int i = 0; i < coordinatesList.size(); i++){
-            adfgvxList.add(convertCoordToADFGVX(coordinatesList.get(i)));
+            listOfLetterCoordinates.add(convertCoordToADFGVX(coordinatesList.get(i)));
         }
 
-        String concatenatedADFGVXStrings = concatenateADFGVXStrings(adfgvxList);
-        String matrixText = generateMatrixTextFromString(concatenatedADFGVXStrings);
+        String coordinatesListText = concatenateADFGVXStrings(listOfLetterCoordinates);
+        String matrixText = generateMatrixTextFromString(coordinatesListText);
         String alphabetizedMatrixText = alphabetizeMatrixText(matrixText);
-        String cText = generateCipherText(alphabetizedMatrixText);
-        System.out.println(cText);
+        String cipherText = generateCipherText(alphabetizedMatrixText);
+        System.out.println(cipherText);
 
-        return cText;
+        return cipherText;
+    }
+
+    public String decrypt(String cipherText, String key){
+        setCipherText(cipherText);
+        setKey(key);
+        createMatix();
+
+        String alphabetizedMatrixText = dropXsFromCipherText(cipherText);
+        String matrixText = undoAlphabetized(alphabetizedMatrixText);
+        String coordinatesListText = dropXsFromConcatenatedADFGVXString(matrixText);
+        ArrayList<ArrayList<String>> listOfLetterCoordinates = undoConcatenate(coordinatesListText);
+
+
+
+
+        return plainText;
     }
 
     private void createMatix(){
@@ -184,25 +200,28 @@ public class Cipher {
     }
 
     private String concatenateADFGVXStrings(ArrayList<ArrayList<String>> listOfLetterCoordinates){
-        String concatenatedADFGVXString = "";
+        String coordinatesListText = "";
         for ( ArrayList<String> letterCoordinates : listOfLetterCoordinates ){
-            concatenatedADFGVXString += letterCoordinates.get(0) + letterCoordinates.get(1);
+            coordinatesListText += letterCoordinates.get(0) + letterCoordinates.get(1);
         }
-        return concatenatedADFGVXString;
+        return coordinatesListText;
     }
 
-    private ArrayList<ArrayList<String>> undoConcatenate(String concatenatedADFGVXString){
-        ArrayList<ArrayList<String>> listOfAdfgvx = new ArrayList<>();
+    private ArrayList<ArrayList<String>> undoConcatenate(String coordinatesListText){
+        ArrayList<ArrayList<String>> listOfLetterCoordinates = new ArrayList<>();
         for (int i = 0; i < keyLength; i++){
-            ArrayList<String> adfgvx = new ArrayList<>();
-            adfgvx.add(String.valueOf(concatenatedADFGVXString.charAt(i)));
+            ArrayList<String> letterCoordinates = new ArrayList<>();
+            letterCoordinates.add(String.valueOf(coordinatesListText.charAt(i)));
             i++;
-            adfgvx.add(String.valueOf(concatenatedADFGVXString.charAt(i)));
-            listOfAdfgvx.add(adfgvx);
+            letterCoordinates.add(String.valueOf(coordinatesListText.charAt(i)));
+            listOfLetterCoordinates.add(letterCoordinates);
         }
-        return listOfAdfgvx;
+        return listOfLetterCoordinates;
     }
 
+    /**
+     * adds Xs to the end of the coordinates list, providing the matrix text
+     */
     private String generateMatrixTextFromString(String concatenatedADFGVXString){
         String matrixText = concatenatedADFGVXString;
         int stringLength = concatenatedADFGVXString.length();
@@ -214,6 +233,17 @@ public class Cipher {
         }
 
         return matrixText;
+    }
+
+    /**
+     * drops Xs from the end of the matrix text, providing the coordinates list text
+     */
+    String dropXsFromConcatenatedADFGVXString(String matrixText){
+        String concatenatedADFGVXString = matrixText;
+        if(matrixText.length()%2 == 1){
+            concatenatedADFGVXString = matrixText.substring(0,matrixText.length()-1);
+        }
+        return concatenatedADFGVXString;
     }
 
     /**
@@ -271,8 +301,6 @@ public class Cipher {
         return matrixText;
     }
 
-
-
     /**
      * adds Xs to the end of the the alphabetized matrix text to mask the key length
      */
@@ -305,8 +333,6 @@ public class Cipher {
         return alphabeticalMatrixText;
     }
 
-
-
     /**
      * alphabetizes the key and provides another arraylist storing index values so that we can decrypt
      */
@@ -328,19 +354,6 @@ public class Cipher {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     public String getPlainText() {
         return pText;
     }
@@ -349,12 +362,12 @@ public class Cipher {
         this.pText = plainText;
     }
 
-    public String getcText() {
-        return cText;
+    public String getCipherText() {
+        return cipherText;
     }
 
-    public void setcText(String cText) {
-        this.cText = cText;
+    public void setCipherText(String cipherText) {
+        this.cipherText = cipherText;
     }
 
     public String getcText2() {
