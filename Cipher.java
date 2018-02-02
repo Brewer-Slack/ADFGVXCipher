@@ -232,6 +232,8 @@ public class Cipher {
             ArrayList<String> column = new ArrayList<>();
             for (int row = 0; row < getNumRows(); row++) {
                 column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
+               // System.out.println(String.valueOf(matrixText.charAt(col*keyLength + row)));
+                System.out.println(column.get(row));
             }
             columnsList.add(column);
         }
