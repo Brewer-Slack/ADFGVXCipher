@@ -10,15 +10,6 @@ public class Cipher {
     private String key;
     private String keyAlpha;
     private int keyLength;
-
-    public int getNumRows() {
-        return numRows;
-    }
-
-    public void setNumRows(int numRows) {
-        this.numRows = numRows;
-    }
-
     private int numRows;
     private ArrayList<String> preSortArray;
     private ArrayList<String> postSortArray;
@@ -433,4 +424,12 @@ public class Cipher {
     public String getMatrixText() { return matrixText; }
 
     public void setMatrixText(String matrixText) { this.matrixText = matrixText; }
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
+    }
 }
