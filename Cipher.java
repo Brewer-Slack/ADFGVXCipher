@@ -231,7 +231,9 @@ public class Cipher {
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
             for (int row = 0; row < getNumRows(); row++) {
-                column.add(String.valueOf(matrixText.charAt(row*keyLength + col))); // i think this was the bug!
+                column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
+               // System.out.println(String.valueOf(matrixText.charAt(col*keyLength + row)));
+                System.out.println(column.get(row));
             }
             columnsList.add(column);
         }
@@ -256,7 +258,7 @@ public class Cipher {
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
             for (int row = 0; row < numRows; row++) {
-                column.add(String.valueOf(matrixText.charAt(row*keyLength + col)));
+                column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
             }
             sortedColumnsList.add(column);
         }
