@@ -289,6 +289,22 @@ public class Cipher {
         return cipherText;
     }
 
+    /**
+     * drops all the Xs allowed without allowing information loss, providing the alphabetized matrix text
+     */
+    private String dropXsFromCipherText(String cipherText){
+        String alphabeticalMatrixText = cipherText;
+        int cipherTextLength = cipherText.length();
+        int numRows = cipherTextLength/keyLength;
+        int matrixTextLength = numRows * keyLength;
+        int charactersToDrop = cipherTextLength - matrixTextLength;
+        for (int i = 0; i < charactersToDrop; i++){
+            alphabeticalMatrixText = alphabeticalMatrixText.substring(0, alphabeticalMatrixText.length() - 1);
+        }
+
+        return alphabeticalMatrixText;
+    }
+
 
 
     /**
