@@ -57,7 +57,28 @@ public class Cipher {
      *
      * @return
      */
-    private String encrypt(){
+    public String encrypt(String plainText, String key){
+        setPlainText(plainText);
+        setKeyLength(key.length());
+        createMatix();
+        ArrayList<String> splitPlain = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> coordinatesList= new ArrayList<>();
+        for(int i = 0; i < plainText.length(); i++) {
+            splitPlain.add(String.valueOf(plainText.charAt(i)));
+            coordinatesList.add(convertLetterToCoordinate(splitPlain.get(i)));
+        }
+        ArrayList<ArrayList<String>> adfgvxList = new ArrayList<>();
+        for(int i = 0; i < coordinatesList.size(); i++){
+            adfgvxList.add(convertCoordToADFGVX(coordinatesList.get(i)));
+        }
+
+        String concatenatedADFGVXStrings = concatenateADFGVXStrings(adfgvxList);
+        String matrixText = generateMatrixTextFromString(concatenatedADFGVXStrings);
+        String alphabetizedMatrixText = alphabetizeMatrixText(matrixText);
+        String cText = generateCipherText(alphabetizedMatrixText);
+        System.out.println(cText);
+
+
 
 
 
@@ -66,14 +87,14 @@ public class Cipher {
         return cText;
     }
 
-    private ArrayList<String> createMatix(){
+    private void createMatix(){
         this.matrixArray = new ArrayList<>();
 
         matrixArray.add("F");
         matrixArray.add("L");
         matrixArray.add("1");
         matrixArray.add("A");
-        matrixArray.add("0");
+        matrixArray.add("O");
         matrixArray.add("2");
 
         matrixArray.add("J");
@@ -110,8 +131,6 @@ public class Cipher {
         matrixArray.add("0");
         matrixArray.add("T");
         matrixArray.add("9");
-
-        return matrixArray;
     }
 
     private ArrayList<Integer> convertLetterToCoordinate(String letter){
@@ -170,10 +189,10 @@ public class Cipher {
         return adfgvx;
     }
 
-    private String concatenateADFGVXStrings(ArrayList<ArrayList<String>> listOfAdfgvx){
+    private String concatenateADFGVXStrings(ArrayList<ArrayList<String>> listOfLetterCoordinates){
         String concatenatedADFGVXString = "";
-        for ( ArrayList<String> adfgvx : listOfAdfgvx ){
-            concatenatedADFGVXString += adfgvx.get(0) + adfgvx.get(1);
+        for ( ArrayList<String> letterCoordinates : listOfLetterCoordinates ){
+            concatenatedADFGVXString += letterCoordinates.get(0) + letterCoordinates.get(1);
         }
         return concatenatedADFGVXString;
     }
@@ -199,6 +218,7 @@ public class Cipher {
         for (int i = 0; i<numXs; i++){
             matrixText += "X";
         }
+
         return matrixText;
     }
 
@@ -210,7 +230,7 @@ public class Cipher {
         ArrayList<ArrayList<String>> columnsList = new ArrayList<>();
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
-            for (int row = 0; row < numRows; row++) {
+            for (int row = 0; row < getNumRows(); row++) {
                 column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
             }
             columnsList.add(column);
@@ -339,4 +359,8 @@ public class Cipher {
     public void setPostSortArray(ArrayList<String> postSortArray) {
         this.postSortArray = postSortArray;
     }
+
+    public String getMatrixText() { return matrixText; }
+
+    public void setMatrixText(String matrixText) { this.matrixText = matrixText; }
 }
