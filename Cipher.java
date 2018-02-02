@@ -10,15 +10,6 @@ public class Cipher {
     private String key;
     private String keyAlpha;
     private int keyLength;
-
-    public int getNumRows() {
-        return numRows;
-    }
-
-    public void setNumRows(int numRows) {
-        this.numRows = numRows;
-    }
-
     private int numRows;
     private ArrayList<String> preSortArray;
     private ArrayList<String> postSortArray;
@@ -294,14 +285,15 @@ public class Cipher {
         ArrayList<ArrayList<String>> sortedColumnsList = new ArrayList<>();
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
-            for (int row = 0; row < numRows; row++) {
-                column.add(String.valueOf(alphabeticalMatrixText.charAt(col*keyLength + row)));
+            for (int row = 0; row < getNumRows(); row++) {
+                column.add(String.valueOf(alphabeticalMatrixText.charAt(row*keyLength + col)));
             }
             sortedColumnsList.add(column);
         }
 
         ArrayList<ArrayList<String>> columnsList = new ArrayList<>();
         for (int i = 0; i < keyLength; i++){
+            System.out.println(sortedColumnsList);
             columnsList.set(i, sortedColumnsList.get(decode.get(i))); // not sure if this is the right order
         }
 
@@ -336,6 +328,7 @@ public class Cipher {
         String alphabeticalMatrixText = cipherText;
         int cipherTextLength = cipherText.length();
         int numRows = cipherTextLength/keyLength;
+        setNumRows(numRows);
         int matrixTextLength = numRows * keyLength;
         int charactersToDrop = cipherTextLength - matrixTextLength;
         for (int i = 0; i < charactersToDrop; i++){
@@ -433,4 +426,12 @@ public class Cipher {
     public String getMatrixText() { return matrixText; }
 
     public void setMatrixText(String matrixText) { this.matrixText = matrixText; }
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
+    }
 }
