@@ -77,7 +77,7 @@ public class Cipher {
         String matrixText = generateMatrixTextFromString(letterCoordinatesListText);
         String alphabetizedMatrixText = alphabetizeMatrixText(matrixText);
         String cipherText = generateCipherText(alphabetizedMatrixText);
-        System.out.println(cipherText);
+
 
         return cipherText;
     }
