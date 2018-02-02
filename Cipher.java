@@ -12,6 +12,16 @@ public class Cipher {
     private String key;
     private String keyAlpha;
     private int keyLength;
+
+    public int getNumRows() {
+        return numRows;
+    }
+
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
+    }
+
+    private int numRows;
     private ArrayList<String> preSortArray;
     private ArrayList<String> postSortArray;
     private ArrayList<String> matrixArray;
@@ -180,14 +190,60 @@ public class Cipher {
         return listOfAdfgvx;
     }
 
-    private String addXsToConcatenatedADFGVXStrings(String concatenatedADFGVXString){
-        String concatenatedADFGVXStringWithXs = concatenatedADFGVXString;
+    private String generateMatrixTextFromString(String concatenatedADFGVXString){
+        String matrixText = concatenatedADFGVXString;
         int stringLength = concatenatedADFGVXString.length();
-        int numXs = (((stringLength/keyLength) + 1) * keyLength) - stringLength;
+        int numRows = (stringLength/keyLength) + 1;
+        setNumRows(numRows);
+        int numXs = ((numRows * keyLength) - stringLength);
         for (int i = 0; i<numXs; i++){
-            concatenatedADFGVXStringWithXs += "X";
+            matrixText += "X";
         }
-        return concatenatedADFGVXStringWithXs;
+        return matrixText;
+    }
+
+    /**
+     * alphabetized matrix columns (swap columns E, N, C, R, Y, P, T rearrange to C, E, N, P, R, T, Y)
+     */
+    private String alphabetizeMatrixText(String matrixText){
+        String alphabeticalMatrixText = "";
+        ArrayList<ArrayList<String>> columnsList = new ArrayList<>();
+        for (int col = 0; col < keyLength; col++){
+            ArrayList<String> column = new ArrayList<>();
+            for (int row = 0; row < numRows; row++) {
+                column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
+            }
+            columnsList.add(column);
+        }
+
+        ArrayList<ArrayList<String>> sortedColumnsList = new ArrayList<>();
+        for (int i = 0; i < keyLength; i++){
+            sortedColumnsList.set(decode.get(i), columnsList.get(i));
+        }
+
+        for (int col = 0; col < keyLength; col++){
+            for (int row = 0; row < numRows; row++){
+                alphabeticalMatrixText += sortedColumnsList.get(col).get(row);
+            }
+        }
+
+        return alphabeticalMatrixText;
+    }
+
+    /**
+     * adds Xs to the end of the the alphabetized matrix text to mask the key length
+     */
+    private String generateCipherText(String alphabeticalMatrixText){
+        String cipherText = alphabeticalMatrixText;
+        int stringLength = alphabeticalMatrixText.length();
+        int numWords = (stringLength/6) + 1;
+
+        int numXs = ((numWords * 6) - stringLength);
+        for (int i = 0; i < numWords; i++){
+            cipherText += "X";
+        }
+
+        return cipherText;
     }
 
     /**
@@ -205,6 +261,8 @@ public class Cipher {
             decode.add(keyAlpha.indexOf(key.charAt(i)));
         }
     }
+
+
 
 
 
