@@ -53,20 +53,6 @@ public class Cipher {
         return cText;
     }
 
-    private ArrayList<Integer> letterToCoordinate(String letter){
-        int i = matrixArray.indexOf(letter);
-
-        int row = (i/6);
-        int col = i - ((row) * 6);
-
-        ArrayList<Integer> rowCol = new ArrayList<>();
-
-        rowCol.add(row);
-        rowCol.add(col);
-
-        return rowCol;
-    }
-
     private ArrayList<String> createMatix(){
         this.matrixArray = new ArrayList<>();
 
@@ -115,7 +101,21 @@ public class Cipher {
         return matrixArray;
     }
 
-    private String convertCoordToLetter(ArrayList<Integer> coords){
+    private ArrayList<Integer> convertLetterToCoordinate(String letter){
+        int i = matrixArray.indexOf(letter);
+
+        int row = (i/6);
+        int col = i - ((row) * 6);
+
+        ArrayList<Integer> rowCol = new ArrayList<>();
+
+        rowCol.add(row);
+        rowCol.add(col);
+
+        return rowCol;
+    }
+
+    private String convertCoordinateToLetter(ArrayList<Integer> coords){
         int row = coords.get(0);
         int col = coords.get(1);
         int index = (6 * row) + col;
@@ -142,6 +142,64 @@ public class Cipher {
         coord.add(colIndex);
         return coord;
     }
+
+    private String convertADFGVXToString(ArrayList<String> adfgvx) {
+        String adfgvxString = "";
+        adfgvxString += adfgvx.get(0);
+        adfgvxString += adfgvx.get(1);
+        return adfgvxString;
+    }
+
+    private ArrayList<String> convertStringToADFGVX (String adfgvxString){
+        ArrayList<String> adfgvx = new ArrayList<>();
+        adfgvx.add(String.valueOf(adfgvxString.charAt(0)));
+        adfgvx.add(String.valueOf(adfgvxString.charAt(1)));
+        return adfgvx;
+    }
+
+    private String concatenateADFGVXStrings(ArrayList<ArrayList<String>> listOfAdfgvx){
+        String concatenatedADFGVXString = "";
+        for ( ArrayList<String> adfgvx : listOfAdfgvx ){
+            concatenatedADFGVXString += adfgvx.get(0) + adfgvx.get(1);
+        }
+        return concatenatedADFGVXString;
+    }
+
+    private ArrayList<ArrayList<String>> undoConcatenate(String concatenatedADFGVXString){
+        ArrayList<ArrayList<String>> listOfAdfgvx = new ArrayList<>();
+        for (int i = 0; i < keyLength; i++){
+            ArrayList<String> adfgvx = new ArrayList<>();
+            adfgvx.add(String.valueOf(concatenatedADFGVXString.charAt(i)));
+            i++;
+            adfgvx.add(String.valueOf(concatenatedADFGVXString.charAt(i)));
+            listOfAdfgvx.add(adfgvx);
+        }
+        return listOfAdfgvx;
+    }
+
+    private String addXsToConcatenatedADFGVXStrings(String concatenatedADFGVXString){
+        String concatenatedADFGVXStringWithXs = concatenatedADFGVXString;
+        int stringLength = concatenatedADFGVXString.length();
+        int numXs = (((stringLength/keyLength) + 1) * keyLength) - stringLength;
+        for (int i = 0; i<numXs; i++){
+            concatenatedADFGVXStringWithXs += "X";
+        }
+        return concatenatedADFGVXStringWithXs;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public String getPlainText() {
         return pText;
