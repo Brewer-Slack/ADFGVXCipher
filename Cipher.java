@@ -293,7 +293,7 @@ public class Cipher {
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
             for (int row = 0; row < numRows; row++) {
-                column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
+                column.add(String.valueOf(alphabeticalMatrixText.charAt(col*keyLength + row)));
             }
             sortedColumnsList.add(column);
         }
