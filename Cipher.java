@@ -72,8 +72,8 @@ public class Cipher {
             listOfLetterCoordinates.add(convertCoordToADFGVX(coordinatesList.get(i)));
         }
 
-        String coordinatesListText = concatenateADFGVXStrings(listOfLetterCoordinates);
-        String matrixText = generateMatrixTextFromString(coordinatesListText);
+        String letterCoordinatesListText = concatenateADFGVXStrings(listOfLetterCoordinates);
+        String matrixText = generateMatrixTextFromString(letterCoordinatesListText);
         String alphabetizedMatrixText = alphabetizeMatrixText(matrixText);
         String cipherText = generateCipherText(alphabetizedMatrixText);
         System.out.println(cipherText);
@@ -91,7 +91,17 @@ public class Cipher {
         String coordinatesListText = dropXsFromConcatenatedADFGVXString(matrixText);
         ArrayList<ArrayList<String>> listOfLetterCoordinates = undoConcatenate(coordinatesListText);
 
+        ArrayList<ArrayList<Integer>> listOfCoordinates = new ArrayList<>();
+        for(int i = 0; i < listOfLetterCoordinates.size(); i++){
+            listOfCoordinates.add(convertADFGVXToCoord(listOfLetterCoordinates.get(i)));
+        }
 
+        ArrayList<String> splitPlain = new ArrayList<>();
+        String plainText = "";
+        for (int i = 0; i < listOfCoordinates.size(); i++){
+            splitPlain.add(convertCoordinateToLetter(listOfCoordinates.get(i)));
+            plainText += splitPlain.get(i);
+        }
 
 
         return plainText;
