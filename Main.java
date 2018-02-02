@@ -10,7 +10,6 @@ public class Main {
         String key = scan.nextLine();
         System.out.println("");
 
-        System.out.println("");
         System.out.println("1. Encrypt");
         System.out.println("2. Decrypt");
         System.out.print("Would you like to Encrypt or Decrypt a message? (1-2): ");
@@ -19,7 +18,7 @@ public class Main {
             runEncryption(key);
         }
         else{
-            runDecryption();
+            runDecryption(key);
         }
 
 
@@ -30,14 +29,17 @@ public class Main {
         System.out.println("");
         System.out.print("Enter a secret code: ");
         String plainText = scan.nextLine();
-        System.out.println("testing plain text: " + plainText);
         c.encrypt(plainText,key);
 
 
 
     }
 
-    private static void runDecryption(){
-
+    private static void runDecryption(String key){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("");
+        System.out.print("Enter a cipher text: ");
+        String cipherText = scan.nextLine();
+        c.decrypt(cipherText,key);
     }
 }
