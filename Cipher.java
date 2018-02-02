@@ -223,7 +223,7 @@ public class Cipher {
     }
 
     /**
-     * alphabetized matrix columns (swap columns E, N, C, R, Y, P, T rearrange to C, E, N, P, R, T, Y)
+     * alphabetized matrix columns (for example, columns E, N, C, R, Y, P, T rearrange to C, E, N, P, R, T, Y)
      */
     private String alphabetizeMatrixText(String matrixText){
         String alphabeticalMatrixText = "";
@@ -252,6 +252,33 @@ public class Cipher {
         return alphabeticalMatrixText;
     }
 
+    private String undoAlphabetized(String alphabeticalMatrixText){
+        String matrixText = "";
+        ArrayList<ArrayList<String>> sortedColumnsList = new ArrayList<>();
+        for (int col = 0; col < keyLength; col++){
+            ArrayList<String> column = new ArrayList<>();
+            for (int row = 0; row < numRows; row++) {
+                column.add(String.valueOf(matrixText.charAt(col*keyLength + row)));
+            }
+            sortedColumnsList.add(column);
+        }
+
+        ArrayList<ArrayList<String>> columnsList = new ArrayList<>();
+        for (int i = 0; i < keyLength; i++){
+            columnsList.set(i, sortedColumnsList.get(decode.get(i))); // not sure if this is the right order
+        }
+
+        for (int col = 0; col < keyLength; col++){
+            for (int row = 0; row < numRows; row++){
+                matrixText += sortedColumnsList.get(col).get(row);
+            }
+        }
+
+        return matrixText;
+    }
+
+
+
     /**
      * adds Xs to the end of the the alphabetized matrix text to mask the key length
      */
@@ -267,6 +294,8 @@ public class Cipher {
 
         return cipherText;
     }
+
+
 
     /**
      * alphabetizes the key and provides another arraylist storing index values so that we can decrypt
