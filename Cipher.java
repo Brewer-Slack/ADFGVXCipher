@@ -1,3 +1,13 @@
+/**
+ Class: CPSC 353-01
+ Name: Brewer Slack
+ Name1: Quinlan Bingham
+ Name2: Jonathan Reid
+ GU Username: bslack
+ Assignment: Project 1
+ */
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 
