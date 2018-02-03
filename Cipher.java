@@ -11,6 +11,9 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * the cypher class handles all data manipulation both into encryption and decryption
+ */
 public class Cipher {
     // fields
     private String pText;
@@ -61,8 +64,8 @@ public class Cipher {
     }
 
     /**
-     *
-     * @return
+     * Encrypt handles encrypting the message given by the user
+     * @return cipherText the encrypted message
      */
     public String encrypt(String plainText, String key){
         setPlainText(plainText);
@@ -91,6 +94,12 @@ public class Cipher {
         return cipherText;
     }
 
+    /**
+     * handles decrypting the given cipher text
+     * @param cipherText the text to decipher
+     * @param key the key to decipher on
+     * @return the decrypted message
+     */
     public String decrypt(String cipherText, String key){
         setCipherText(cipherText);
         setKey(key);
@@ -119,6 +128,9 @@ public class Cipher {
         return plainText;
     }
 
+    /**
+     * creates the ADFGVX matrix
+     */
     private void createMatix(){
         this.matrixArray = new ArrayList<>();
 
@@ -165,6 +177,11 @@ public class Cipher {
         matrixArray.add("9");
     }
 
+    /**
+     * converts plainText to AGFGVX Coordinates
+     * @param letter a single letter in the plain text
+     * @return the coordinate pair corresponding to the letter
+     */
     private ArrayList<Integer> convertLetterToCoordinate(String letter){
         int i = matrixArray.indexOf(letter);
 
@@ -179,6 +196,11 @@ public class Cipher {
         return rowCol;
     }
 
+    /**
+     * converts coordinate pairs to letters
+     * @param coords the coordinate pair
+     * @return the letter of the coordinate pair
+     */
     private String convertCoordinateToLetter(ArrayList<Integer> coords){
         int row = coords.get(0);
         int col = coords.get(1);
@@ -187,6 +209,11 @@ public class Cipher {
         return letter;
     }
 
+    /**
+     * converts coordinate pair to ADFGVX
+     * @param coords the coordinate pair
+     * @return the ArrayList holding the ADFGVX
+     */
     private ArrayList<String> convertCoordToADFGVX(ArrayList<Integer> coords){
         int row = coords.get(0);
         int col = coords.get(1);
@@ -196,6 +223,11 @@ public class Cipher {
         return adfgvx;
     }
 
+    /**
+     * converts ADFGVX to coordinates
+     * @param adfgvx the list of ADFGVX letters
+     * @return coordinates of letter positions
+     */
     private ArrayList<Integer> convertADFGVXToCoord(ArrayList<String> adfgvx){
         String row = adfgvx.get(0);
         String col = adfgvx.get(1);
@@ -207,20 +239,11 @@ public class Cipher {
         return coord;
     }
 
-    private String convertADFGVXToString(ArrayList<String> adfgvx) {
-        String adfgvxString = "";
-        adfgvxString += adfgvx.get(0);
-        adfgvxString += adfgvx.get(1);
-        return adfgvxString;
-    }
-
-    private ArrayList<String> convertStringToADFGVX (String adfgvxString){
-        ArrayList<String> adfgvx = new ArrayList<>();
-        adfgvx.add(String.valueOf(adfgvxString.charAt(0)));
-        adfgvx.add(String.valueOf(adfgvxString.charAt(1)));
-        return adfgvx;
-    }
-
+    /**
+     * concatenates ADFGVX strings
+     * @param listOfLetterCoordinates list storing letter coordinates
+     * @return a string representation of the coordinates
+     */
     private String concatenateADFGVXStrings(ArrayList<ArrayList<String>> listOfLetterCoordinates){
         String coordinatesListText = "";
         for ( ArrayList<String> letterCoordinates : listOfLetterCoordinates ){
@@ -229,6 +252,11 @@ public class Cipher {
         return coordinatesListText;
     }
 
+    /**
+     * removes concatenation on the coordinates list
+     * @param coordinatesListText the list of coordinates
+     * @return the list of letter coordinates
+     */
     private ArrayList<ArrayList<String>> undoConcatenate(String coordinatesListText){
         ArrayList<ArrayList<String>> listOfLetterCoordinates = new ArrayList<>();
         for (int i = 0; i < (coordinatesListText.length()); i++){
@@ -299,6 +327,11 @@ public class Cipher {
         return alphabeticalMatrixText;
     }
 
+    /**
+     * reassembles alphabetized matrix text
+     * @param alphabeticalMatrixText the alphabetized matrix text
+     * @return the reassembled word
+     */
     private String undoAlphabetized(String alphabeticalMatrixText){
         String matrixText = "";
         ArrayList<ArrayList<String>> sortedColumnsList = new ArrayList<>();
@@ -378,6 +411,8 @@ public class Cipher {
         }
     }
 
+
+    // Getters and Setters
 
     public String getPlainText() {
         return pText;

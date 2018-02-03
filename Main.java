@@ -29,9 +29,12 @@ public class Main {
             runDecryption(key);
         }
 
-
-
     }
+
+    /**
+     * handles encryption
+     * @param key the key given by the user
+     */
     private static void runEncryption(String key){
         Scanner scan = new Scanner(System.in);
         System.out.println("");
@@ -40,11 +43,12 @@ public class Main {
         Cipher c = new Cipher(plainText, "", key);
         String cipherText = c.encrypt(plainText,key);
         System.out.println(cipherText);
-
-
-
     }
 
+    /**
+     * handles decryption
+     * @param key the key given by the user
+     */
     private static void runDecryption(String key){
         Scanner scan = new Scanner(System.in);
         System.out.println("");
