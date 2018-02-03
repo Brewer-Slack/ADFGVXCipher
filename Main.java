@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Main {
-   private static Cipher c = new Cipher();
 
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
@@ -29,6 +28,7 @@ public class Main {
         System.out.println("");
         System.out.print("Enter a secret code: ");
         String plainText = scan.nextLine();
+        Cipher c = new Cipher(plainText, "", key);
         String cipherText = c.encrypt(plainText,key);
         System.out.println(cipherText);
 
@@ -41,6 +41,8 @@ public class Main {
         System.out.println("");
         System.out.print("Enter a cipher text: ");
         String cipherText = scan.nextLine();
+
+        Cipher c = new Cipher("", cipherText, key);
         String plainText = c.decrypt(cipherText,key);
         System.out.println(plainText);
 

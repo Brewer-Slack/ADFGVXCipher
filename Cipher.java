@@ -19,11 +19,11 @@ public class Cipher {
 
     // DVC
     public Cipher(){
-        this.pText = "SEEMEAT10";
-        this.cipherText = "XAGXGXVVGXAGXVAFXGXXX";
-        this.key = "ENCRYPT";
-        this.keyAlpha = "CENPRTY";
-        this.keyLength = 7;
+        this.pText = "";
+        this.cipherText = "";
+        this.key = "";
+        this.keyAlpha = "";
+        this.keyLength = 0;
         this.adfgvxList = new ArrayList<>();
         adfgvxList.add("A");
         adfgvxList.add("D");
@@ -40,6 +40,14 @@ public class Cipher {
         this.cipherText = cipherText;
         this.key = key;
         this.keyLength = key.length();
+        this.adfgvxList = new ArrayList<>();
+        adfgvxList.add("A");
+        adfgvxList.add("D");
+        adfgvxList.add("F");
+        adfgvxList.add("G");
+        adfgvxList.add("V");
+        adfgvxList.add("X");
+        this.decode = new ArrayList<>();
     }
 
     /**
@@ -49,8 +57,8 @@ public class Cipher {
     public String encrypt(String plainText, String key){
         setPlainText(plainText);
         setKeyLength(key.length());
-        createMatix();
         alphabetizeKey();
+        createMatix();
 
         ArrayList<String> splitPlain = new ArrayList<>();
         ArrayList<ArrayList<Integer>> coordinatesList= new ArrayList<>();
@@ -76,15 +84,16 @@ public class Cipher {
     public String decrypt(String cipherText, String key){
         setCipherText(cipherText);
         setKey(key);
-        createMatix();
         alphabetizeKey();
+        createMatix();
 
         String alphabetizedMatrixText = dropXsFromCipherText(cipherText);
         String matrixText = undoAlphabetized(alphabetizedMatrixText);
         String coordinatesListText = dropXsFromConcatenatedADFGVXString(matrixText);
-        ArrayList<ArrayList<String>> listOfLetterCoordinates = undoConcatenate(coordinatesListText);
 
+        ArrayList<ArrayList<String>> listOfLetterCoordinates = undoConcatenate(coordinatesListText);
         ArrayList<ArrayList<Integer>> listOfCoordinates = new ArrayList<>();
+
         for(int i = 0; i < listOfLetterCoordinates.size(); i++){
             listOfCoordinates.add(convertADFGVXToCoord(listOfLetterCoordinates.get(i)));
         }
@@ -212,7 +221,7 @@ public class Cipher {
 
     private ArrayList<ArrayList<String>> undoConcatenate(String coordinatesListText){
         ArrayList<ArrayList<String>> listOfLetterCoordinates = new ArrayList<>();
-        for (int i = 0; i < keyLength; i++){
+        for (int i = 0; i < (coordinatesListText.length()); i++){
             ArrayList<String> letterCoordinates = new ArrayList<>();
             letterCoordinates.add(String.valueOf(coordinatesListText.charAt(i)));
             i++;
@@ -283,23 +292,24 @@ public class Cipher {
     private String undoAlphabetized(String alphabeticalMatrixText){
         String matrixText = "";
         ArrayList<ArrayList<String>> sortedColumnsList = new ArrayList<>();
+        int x = 0;
         for (int col = 0; col < keyLength; col++){
             ArrayList<String> column = new ArrayList<>();
             for (int row = 0; row < getNumRows(); row++) {
-                column.add(String.valueOf(alphabeticalMatrixText.charAt(row*keyLength + col)));
+                column.add(String.valueOf(alphabeticalMatrixText.charAt(x)));
+                x++;
             }
             sortedColumnsList.add(column);
         }
 
-        ArrayList<ArrayList<String>> columnsList = new ArrayList<>();
+        ArrayList<ArrayList<String>> columnsList = new ArrayList<>(sortedColumnsList);
         for (int i = 0; i < keyLength; i++){
-            System.out.println(sortedColumnsList);
             columnsList.set(i, sortedColumnsList.get(decode.get(i))); // not sure if this is the right order
         }
 
-        for (int col = 0; col < keyLength; col++){
-            for (int row = 0; row < numRows; row++){
-                matrixText += sortedColumnsList.get(col).get(row);
+        for (int row = 0; row < numRows; row++){
+            for (int col = 0; col < keyLength; col++){
+                matrixText += columnsList.get(col).get(row);
             }
         }
         return matrixText;
@@ -314,7 +324,7 @@ public class Cipher {
         int numWords = (stringLength/6) + 1;
 
         int numXs = ((numWords * 6) - stringLength);
-        for (int i = 0; i < numWords; i++){
+        for (int i = 0; i < numXs; i++){
             cipherText += "X";
         }
 
