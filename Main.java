@@ -12,23 +12,34 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        Scanner scan = new Scanner(System.in);
         System.out.println("Welcome to the ADFGVX Cipher.");
-        System.out.print("Enter a key: ");
-        String key = scan.nextLine();
-        System.out.println("");
+        while(true) {
+            Scanner scan = new Scanner(System.in);
+            System.out.print("Enter a key: ");
+            String key = scan.nextLine();
+            System.out.println("");
 
-        System.out.println("1. Encrypt");
-        System.out.println("2. Decrypt");
-        System.out.print("Would you like to Encrypt or Decrypt a message? (1-2): ");
-        int choice = scan.nextInt();
-        if (choice == 1){
-            runEncryption(key);
-        }
-        else{
-            runDecryption(key);
-        }
+            System.out.println("1. Encrypt");
+            System.out.println("2. Decrypt");
+            System.out.print("Would you like to Encrypt or Decrypt a message? (1-2): ");
+            int choice = scan.nextInt();
+            scan.nextLine(); // eat input so that we don't skip the next call
+            if (choice == 1) {
+                runEncryption(key);
+            } else {
+                runDecryption(key);
+            }
+            System.out.print("Would you like to do anything else? (y/n) ");
+            String cont = scan.nextLine();
 
+            System.out.println("");
+
+            if(cont.equals("n")){
+                System.out.println("Goodbye.");
+                break;
+            }
+
+        }
     }
 
     /**
