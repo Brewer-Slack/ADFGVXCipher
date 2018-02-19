@@ -371,7 +371,15 @@ public class Cipher {
             cipherText += "X";
         }
 
-        return cipherText;
+        String cipherTextWithSpaces = "";
+
+        for (int i = 0; i < stringLength; i++){
+            if ( i % 6 == 0 ){
+                cipherTextWithSpaces = cipherTextWithSpaces.substring(0,(i+(i/6))) + " " + cipherText.substring(i,stringLength);
+            }
+        }
+
+        return cipherTextWithSpaces;
     }
 
     /**
@@ -379,7 +387,8 @@ public class Cipher {
      */
     private String dropXsFromCipherText(String cipherText){
         String alphabeticalMatrixText = cipherText;
-        int cipherTextLength = cipherText.length();
+        String cipherTextNoSpaces = cipherText.replace(" ", "");
+        int cipherTextLength = cipherTextNoSpaces.length();
         int numRows = cipherTextLength/keyLength;
         setNumRows(numRows);
         int matrixTextLength = numRows * keyLength;
