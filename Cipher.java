@@ -26,7 +26,7 @@ public class Cipher {
     private int numRows;
     private ArrayList<String> preSortArray;
     private ArrayList<String> postSortArray;
-    private ArrayList<String> matrixArray;
+    private ArrayList<String> matrixArray = createMatix();
     private ArrayList<String> adfgvxList;
     private ArrayList<Integer> decode;
 
@@ -71,7 +71,6 @@ public class Cipher {
         setPlainText(plainText);
         setKeyLength(key.length());
         alphabetizeKey();
-        createMatix();
 
         ArrayList<String> splitPlain = new ArrayList<>();
         ArrayList<ArrayList<Integer>> coordinatesList= new ArrayList<>();
@@ -104,7 +103,6 @@ public class Cipher {
         setCipherText(cipherText);
         setKey(key);
         alphabetizeKey();
-        createMatix();
 
         String alphabetizedMatrixText = dropXsFromCipherText(cipherText);
         String matrixText = undoAlphabetized(alphabetizedMatrixText);
@@ -131,8 +129,8 @@ public class Cipher {
     /**
      * creates the ADFGVX matrix
      */
-    private void createMatix(){
-        this.matrixArray = new ArrayList<>();
+    private ArrayList<String> createMatix(){
+        matrixArray = new ArrayList<>();
 
         matrixArray.add("F");
         matrixArray.add("L");
@@ -175,6 +173,8 @@ public class Cipher {
         matrixArray.add("0");
         matrixArray.add("T");
         matrixArray.add("9");
+        Collections.shuffle(matrixArray);
+        return matrixArray;
     }
 
     /**
