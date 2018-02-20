@@ -373,9 +373,9 @@ public class Cipher {
 
         String cipherTextWithSpaces = "";
 
-        for (int i = 0; i < stringLength; i++){
-            if ( i % 6 == 0 ){
-                cipherTextWithSpaces = cipherTextWithSpaces.substring(0,(i+(i/6))) + " " + cipherText.substring(i,stringLength);
+        for (int i = 0; i <= stringLength + (stringLength/6); i++){
+            if ( i !=0 && i % 6 == 0 ){
+                cipherTextWithSpaces += cipherText.substring(i-6,i) + " ";
             }
         }
 
@@ -386,9 +386,10 @@ public class Cipher {
      * drops all the Xs allowed without allowing information loss, providing the alphabetized matrix text
      */
     private String dropXsFromCipherText(String cipherText){
-        String alphabeticalMatrixText = cipherText;
-        String cipherTextNoSpaces = cipherText.replace(" ", "");
-        int cipherTextLength = cipherTextNoSpaces.length();
+        String cipherTextNoSpaces = cipherText.replaceAll("\\s+","");
+        String alphabeticalMatrixText = cipherTextNoSpaces;
+
+        int cipherTextLength = alphabeticalMatrixText.length();
         int numRows = cipherTextLength/keyLength;
         setNumRows(numRows);
         int matrixTextLength = numRows * keyLength;
